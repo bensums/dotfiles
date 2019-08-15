@@ -1,4 +1,2 @@
 channels:
-  - fastai
-  - pytorch
   - defaults
