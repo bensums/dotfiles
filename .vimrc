@@ -1,3 +1,8 @@
+"python3 import sys
+"python3 print(sys.executable)
+"python3 print(sys.path)
+"python3 from unicodedata import east_asian_width, combining
+
 set background=dark
 
 set nocompatible
@@ -6,9 +11,10 @@ filetype off
 "set ttyfast
 set mouse=a
 set t_Co=256
-python3 from powerline.vim import setup as powerline_setup
-python3 powerline_setup()
-python3 del powerline_setup
+"let g:powerline pycmd="py3"
+"python3 from powerline.vim import setup as powerline_setup
+"python3 powerline_setup()
+"python3 del powerline_setup
 
 set foldcolumn=3
 
