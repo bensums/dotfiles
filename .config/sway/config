@@ -18,7 +18,12 @@ set $term alacritty
 # Your preferred application launcher
 # Note: pass the final command to swaymsg so that the resulting window can be opened
 # on the original workspace that the command was run on.
-set $menu dmenu_path | dmenu | xargs swaymsg exec --
+#set $menu dmenu_path | dmenu | xargs swaymsg exec --
+#set $menu rofi -m $(expr $(swaymsg -t get_tree | jq '.nodes | map([recurse(.nodes[]?, .floating_nodes[]?) | .focused] | any) | index(true)') - 1) -show drun -run-command 'swaymsg exec -- {cmd}'
+set $menu rofi -m $(swaymsg -t get_outputs | jq 'map(select(.active) | .focused) | index(true)') -show drun -run-command 'swaymsg exec -- {cmd}'
+set $lock ~/.local/bin/scripts/lock.sh
+set $screenshot grim ~/Pictures/Screenshot_$(date +"%Y-%m-%d_%H-%M-%S").png
+set $screenclip slurp -d | grim -g - ~/Pictures/Screenshot_$(date +"%Y-%m-%d_%H-%M-%S").png
 
 ### Output configuration
 #
@@ -65,6 +70,12 @@ output * bg /usr/share/backgrounds/sway/Sway_Wallpaper_Blue_1920x1080.png fill
     # Start a terminal
     bindsym $mod+Return exec $term
 
+    # Fullscreen screenshot
+    bindsym $mod+Print exec $screenshot
+
+    # Selection screenshot
+    bindsym $mod+Shift+Print exec $screenclip
+
     # Kill focused window
     bindsym $mod+Shift+q kill
 
@@ -81,8 +92,6 @@ output * bg /usr/share/backgrounds/sway/Sway_Wallpaper_Blue_1920x1080.png fill
     # Reload the configuration file
     bindsym $mod+Shift+c reload
 
-    # Exit sway (logs you out of your Wayland session)
-    bindsym $mod+Shift+e exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -b 'Yes, exit sway' 'swaymsg exit'
 #
 # Moving around:
 #
@@ -196,6 +205,21 @@ mode "resize" {
 }
 bindsym $mod+r mode "resize"
 
+set $mode_system System: (l) lock, (e) logout, (s) suspend, (r) reboot, (S) shutdown, (R) UEFI
+mode "$mode_system" {
+    bindsym l exec $lock, mode "default"
+    bindsym e exit
+    bindsym s exec --no-startup-id systemctl suspend, mode "default"
+    bindsym r exec --no-startup-id systemctl reboot, mode "default"
+    bindsym Shift+s exec --no-startup-id systemctl poweroff -i, mode "default"
+    bindsym Shift+r exec --no-startup-id systemctl reboot --firmware-setup, mode "default"
+
+    # return to default mode
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+bindsym $mod+Shift+e mode "$mode_system"
+
 #
 # Status Bar:
 #
@@ -205,7 +229,8 @@ bar {
 
     # When the status_command prints a new line to stdout, swaybar updates.
     # The default just shows the current date and time.
-    status_command i3status
+    #status_command i3status
+    swaybar_command waybar
 
     colors {
         statusline #ffffff
@@ -226,5 +251,5 @@ bindsym XF86AudioMute exec pulseaudio-ctl down
 
 include /etc/sway/config.d/*
 
-
+include ~/.config/sway/$(hostname)/*
 
