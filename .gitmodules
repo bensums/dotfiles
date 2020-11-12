@@ -4,3 +4,4 @@
 [submodule "/home/ben/.emacs.d"]
 	path = /home/ben/.emacs.d
 	url = https://github.com/syl20bnr/spacemacs
+	branch = develop
