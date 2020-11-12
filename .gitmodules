@@ -1,3 +1,6 @@
 [submodule "/home/ben/.tmux/plugins/tpm"]
 	path = /home/ben/.tmux/plugins/tpm
 	url = https://github.com/tmux-plugins/tpm
+[submodule "/home/ben/.emacs.d"]
+	path = /home/ben/.emacs.d
+	url = https://github.com/syl20bnr/spacemacs
