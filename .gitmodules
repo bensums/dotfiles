@@ -1,7 +1,7 @@
-[submodule "/home/ben/.tmux/plugins/tpm"]
-	path = /home/ben/.tmux/plugins/tpm
+[submodule ".tmux/plugins/tpm"]
+	path = .tmux/plugins/tpm
 	url = https://github.com/tmux-plugins/tpm
-[submodule "/home/ben/.emacs.d"]
-	path = /home/ben/.emacs.d
+[submodule ".emacs.d"]
+	path = .emacs.d
 	url = https://github.com/syl20bnr/spacemacs
 	branch = develop
